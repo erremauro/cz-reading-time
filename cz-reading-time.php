@@ -386,9 +386,23 @@ function czrt_inject_section_reading_time($content) {
         $minutes = czrt_get_minutes_from_word_count(czrt_count_words_in_html($section_html));
 
         $rebuilt .= $heading_html;
-        if (!czrt_is_excluded_heading_html($heading_html, $rebuilt . $heading_html)) {
+
+        $is_collapsable_toggle = (bool) preg_match('/<h2\b[^>]*\bcollapsable-toggle\b/is', $heading_html);
+
+        if ($is_collapsable_toggle) {
+            $reading_time_html = czrt_build_section_reading_time_html($minutes);
+            $section_html = preg_replace_callback(
+                '/(<div\b[^>]*\bcollapsable-content\b[^>]*>)/is',
+                function ($m) use ($reading_time_html) {
+                    return $m[1] . $reading_time_html;
+                },
+                $section_html,
+                1
+            );
+        } elseif (!czrt_is_excluded_heading_html($heading_html, $rebuilt . $heading_html)) {
             $rebuilt .= czrt_build_section_reading_time_html($minutes);
         }
+
         $rebuilt .= $section_html;
     }
 
