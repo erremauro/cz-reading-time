@@ -2,10 +2,10 @@
 /**
  * Plugin Name: CZ Reading Time
  * Description: Calcola e visualizza automaticamente il tempo di lettura totale e per sezione nei singoli articoli.
- * Version: 1.1.0
+ * Version: 1.0.2
  * Requires at least: 6.0
  * Requires PHP: 7.4
- * Author: CZ
+ * Author: Roberto Mauro
  */
 
 if (!defined('ABSPATH')) {
