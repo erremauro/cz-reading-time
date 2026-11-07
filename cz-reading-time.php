@@ -2,7 +2,7 @@
 /**
  * Plugin Name: CZ Reading Time
  * Description: Calcola e visualizza automaticamente il tempo di lettura totale e per sezione nei singoli articoli.
- * Version: 1.0.2
+ * Version: 1.0.3
  * Requires at least: 6.0
  * Requires PHP: 7.4
  * Author: Roberto Mauro
@@ -152,6 +152,12 @@ function czrt_is_filter_suppressed($set = null) {
 
     return $suppressed;
 }
+
+// Durante il calcolo del tempo totale, cz-outline non deve sostituire il contenuto
+// con quello della pagina corrente (altrimenti si conta N volte la stessa pagina).
+add_filter('cz_outline_bypass_content_filter', function ($bypass) {
+    return $bypass || czrt_is_filter_suppressed();
+});
 
 function czrt_render_content_without_injection($content) {
     $previous_state = czrt_is_filter_suppressed();
